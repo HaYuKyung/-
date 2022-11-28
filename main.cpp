@@ -1,47 +1,87 @@
 #include <iostream>
 #include <string>
-#include <math.h>
+#include <windows.h>
 
 using namespace std;
 
+int chain[100];
+string key;
+void key_maker(){
+    cin >> key;
 
+    return;
+}
+
+void encryption(){
+    for(int i=0;i<key.size();i++){
+        chain[i]=key[i]-'A';
+    }
+    string input, output;
+
+    cin >> input;
+
+    for(int i=0;i<input.size();i++){
+        int val= input[i]-'A';
+        for(int j=0;j<key.size();j++){
+            val= (val-chain[j])%26;
+        }
+        if(val<0){
+            val=val+26;
+        }
+        output.push_back('A'+val);
+        chain[0]=(chain[0]+1)%26;
+
+   }
+   cout << output <<"\n";
+   Sleep(3000);
+   return;
+
+
+
+}
+
+void decryption(){
+    for(int i=0;i<key.size();i++){
+        chain[i]=key[i]-'A';
+    }
+    string input, output;
+
+   cin >> input;
+
+   for(int i=0;i<input.size();i++){
+        int val= input[i]-'A';
+        for(int j=0;j<key.size();j++){
+            val= (val+chain[j])%26;
+        }
+        output.push_back('A'+val);
+        chain[0]=(chain[0]+1)%26;
+   }
+
+   cout << output <<"\n";
+   Sleep(3000);
+   return;
+}
 
 int main()
 {
-    int gap;
-    int sawtooth_key[8]={'C', 'H', 'I', 'C', 'K', 'E', 'N', 'S'};
-    string s;
 
-    cin >> s;
+    while(1){
+        int button;
+        cout << "if you want to encrypt your sentence, press 1\n";
+        cout << "if you want to decrypt your sentence, press 2\n";
+        cout << "make your key --> press 3\n";
+        cin >> button;
 
-    s[0]=sawtooth_key[0];
-    gap=sawtooth_key[0]-'A';
-    for(int i=0;i<s.size();i++){
-        for(int j=1;j<8;j++){
-            s[i]=sawtooth_key[j]+gap;
-            gap=s[i]-'A';
-
-            cout << (char)s[i];
-
+        if(button==1){
+            encryption();
         }
-        sawtooth_key[0]++;
-        sawtooth_key[0]=sawtooth_key[0]%'Z';
-        for(int k=1;k<8;k++){
-            int pow_=1;
-            for(int z=0;z<k;z++){
-                pow_=pow_*26;
-            }
-            if((i+1)/pow_==1 && (i+1) % pow_==0){
-                sawtooth_key[k]++;
-                sawtooth_key[k]=sawtooth_key[k]%'Z';
-            }
+        else if(button==2){
+            decryption();
+        }else if(button==3){
+            key_maker();
         }
-
     }
 
-
-    for(int i=0;i<s.size();i++){
-        //cout << (char)s[i];
-    }
 
 }
+
